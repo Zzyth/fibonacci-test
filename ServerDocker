@@ -1,0 +1,42 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /app/Fibonacci.Calculator.Sandbox
+
+# Install EF
+RUN dotnet tool install --global dotnet-ef
+
+# Copy proj files
+COPY Fibonacci.Shared/*.csproj ./Fibonacci.Shared/
+COPY Fibonacci.Calculator/*.csproj ./Fibonacci.Calculator/
+
+# Resotore dependencies
+RUN dotnet restore Fibonacci.Shared/*.csproj 
+RUN dotnet restore Fibonacci.Calculator/*.csproj 
+
+# Copy all other files
+COPY Fibonacci.Calculator ./Fibonacci.Calculator/
+COPY Fibonacci.Shared ./Fibonacci.Shared/
+
+# Build 
+RUN dotnet build ./Fibonacci.Shared/*.csproj
+RUN dotnet build ./Fibonacci.Calculator/*.csproj
+
+WORKDIR /app/Fibonacci.Calculator.Sandbox/Fibonacci.Calculator/
+
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime
+
+WORKDIR /app/Fibonacci.Calculator.Sandbox/
+COPY --from=build /app/Fibonacci.Calculator.Sandbox/Fibonacci.Calculator/out ./
+
+COPY ./wait-for-it.sh .
+COPY ./entrypoint.sh .
+
+RUN chmod 775 ./entrypoint.sh
+RUN chmod +x ./wait-for-it.sh
+
+EXPOSE 7122
+#HEALTHCHECK --interval=5s --timeout=3s --retries=5 CMD curl -sS http://127.0.0.1:7122/health || exit 1
+
+ENTRYPOINT [ "./entrypoint.sh" ]
+CMD [ "dotnet", "Fibonacci.Calculator.dll" , "-v m"]

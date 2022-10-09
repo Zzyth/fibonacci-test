@@ -1,0 +1,22 @@
+
+/.idea/*
+/Fibonacci.Calculator/bin/*
+/Fibonacci.Calculator/obj/*
+/Fibonacci.Shared/bin/*
+/Fibonacci.Shared/obj/*
+/Fibonacci.Client/bin/*
+/Fibonacci.Client/obj/*
+
+
+# User-specific files
+.suo
+.user
+.userosscache
+.sln.docstates
+.sqlite
+
+
+#MacOS files
+.DS_Store
+devops/Down.cmd
+devops/Compose.cmd

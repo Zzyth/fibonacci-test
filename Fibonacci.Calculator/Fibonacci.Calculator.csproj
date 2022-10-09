@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EasyNetQ" Version="7.2.1" />
+        <PackageReference Include="EasyNetQ.PollyHandlerRunner" Version="0.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0-rc.1.22426.10" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Fibonacci.Shared\Fibonacci.Shared.csproj" />
+    </ItemGroup>
+
+</Project>
